@@ -1,0 +1,137 @@
+import logging
+
+import numpy as np
+import pandas as pd
+from keras.layers import Dense
+from keras.models import Sequential
+from sklearn.calibration import LabelEncoder
+from sklearn.model_selection import train_test_split
+
+logging.getLogger().setLevel(logging.INFO)
+
+
+dataset_path = "./dataset/fifa_players.csv"
+
+
+# Data preparation
+def preparation(data_frame: pd.DataFrame):
+    columns_to_drop = [
+        "full_name",
+        "birth_date",
+        "nationality",
+        "value_euro",
+        "wage_euro",
+        "preferred_foot",
+        "release_clause_euro",
+        "national_team",
+        "national_rating",
+        "national_team_position",
+        "national_jersey_number",
+    ]
+
+    data_frame = data_frame.drop(columns=columns_to_drop)
+    le = LabelEncoder()
+    data_frame["positions"] = le.fit_transform(data_frame["positions"])
+    data_frame["body_type"] = le.fit_transform(data_frame["body_type"])
+    return data_frame
+
+
+def model_creation_and_training(data_frame: pd.DataFrame):
+    target = "overall_rating"
+    # Split the data into features (X) and target (y)
+    X = data_frame.drop([target, "name"], axis=1)
+    y = data_frame[target]
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        test_size=0.2,
+        random_state=42
+        )
+
+    # Define the model architecture
+    model = Sequential()
+    model.add(Dense(512, input_dim=X_train.shape[1], activation="relu"))
+    model.add(Dense(128, activation="relu"))
+    model.add(Dense(1, activation="linear"))
+
+    model.compile(loss="mean_squared_error", optimizer="adam")
+
+    model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=1)
+
+    loss = model.evaluate(X_test, y_test, verbose=1)
+    print("Test Loss: ", loss)
+    return model, X_test, y_test, X_train, y_train
+
+
+def predict(data_frame, model, X_test, y_test, X_train, y_train):
+    y_pred = model.predict(X_test)
+
+    # Print the first 10 predicted and actual values
+    for i in range(10):
+        print(f"Predicted: {y_pred[i]}, Actual: {y_test.iloc[i]}")
+
+    # Calculate the residuals for the test set
+    residuals_test = np.abs(y_test - y_pred.reshape(-1))
+
+    # Get the indices of the top 10 most off predictions in the test set
+    top10_test_indices = residuals_test.argsort()[-10:]
+
+    ''' Print the top 10 most off predictions
+    in the test set and their corresponding names
+    '''
+    logging.info("Top 10 most off predictions in the test set:")
+    for i in top10_test_indices:
+        logging.info(
+            f'''
+            "Name: {data_frame.loc[X_test.index[i], 'name']},
+            Predicted: {y_pred[i]},
+            Actual: {y_test.iloc[i]}"
+            '''
+            )
+
+    '''
+        Calculate the residuals for the training set
+    '''
+    y_pred_train = model.predict(X_train)
+    residuals_train = np.abs(y_train - y_pred_train.reshape(-1))
+
+    '''
+        Get the indices of the top 10 most off predictions in the training set
+    '''
+    top10_train_indices = residuals_train.argsort()[-10:]
+
+    '''
+        Print the top 10 most off predictions in the training
+        set and their corresponding names
+    '''
+    logging.info("Top 10 most off predictions in the training set:")
+    for i in top10_train_indices:
+        logging.info(
+            f'''
+            "Name: {data_frame.loc[X_train.index[i], 'name']},
+            Predicted: {y_pred_train[i]},
+            Actual: {y_train.iloc[i]}"
+            '''
+        )
+
+    # Save the model
+    model.save("./models")
+
+
+def train(dataset_path: str):
+    logging.info("getting the Dataset...")
+    data_frame = pd.read_csv(dataset_path)
+    logging.info("Dataset loaded successfully")
+    data_frame = preparation(data_frame)
+    logging.info("Dataset prepared successfully")
+    model, X_test, y_test, X_train, y_train = model_creation_and_training(
+        data_frame=data_frame
+        )
+    logging.info("Model created and trained successfully")
+    predict(data_frame, model, X_test, y_test, X_train, y_train)
+    logging.info("Model predicted successfully")
+
+
+if __name__ == "__main__":
+    train(dataset_path)

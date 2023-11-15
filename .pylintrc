@@ -1,0 +1,19 @@
+[MAIN]
+
+# Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
+# number of processors available to use.
+jobs=0
+
+[MESSAGES CONTROL]
+
+disable=
+    missing-docstring,
+    import-error,
+    no-name-in-module,
+    # handled by black
+    format,
+
+[BASIC]
+
+# Good variable names which should always be accepted, separated by a comma
+good-names=i,j,k,ex,Run,_,q,df
