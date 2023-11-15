@@ -41,12 +41,6 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### Install wheel
-
-```sh
-pip install wheel
-```
-
 ### Install Requirements
 
 ```sh
