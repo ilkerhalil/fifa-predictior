@@ -1,7 +1,5 @@
 # FIFA PREDICTIOR
 
-# Wind Power Curve Analyzer Api
-
 ## Set up pyenv
 
 Add those commands below to your shell
