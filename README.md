@@ -48,10 +48,27 @@ pip install -r dev_requirements.txt
 pip install -r requirements.txt
 ```
 
-### Setup project
+### Format code
 
 ```sh
-make local-install
+make format
 ```
 
+### Check Code
+
+```sh
+make check-format
+```
+
+### Lint Code
+
+```sh
+make lint
+```
+
+### Create Model
+
+```sh
+make create_model
+```
 
