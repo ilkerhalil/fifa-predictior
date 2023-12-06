@@ -64,7 +64,7 @@ def model_creation_and_training(data_frame: pd.DataFrame):
     return model, X_test, y_test, X_train, y_train
 
 
-def predict(data_frame, model, X_test, y_test, X_train, y_train):
+def predict(data_frame, model: Sequential, X_test, y_test, X_train, y_train):
     y_pred = model.predict(X_test)
 
     # Print the first 10 predicted and actual values
@@ -116,7 +116,7 @@ def predict(data_frame, model, X_test, y_test, X_train, y_train):
         )
 
     # Save the model
-    model.save("./models")
+    model.save(filepath="./models/fifa.keras", save_format="keras")
 
 
 def train(dataset_path: str):

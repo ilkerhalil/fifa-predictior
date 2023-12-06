@@ -17,5 +17,17 @@ lint:
 	flake8 src
 
 create_model:
-	rm -rf models/*.pkl
+	rm -rf models/*
 	python src/train.py
+
+kfp-compile-pipeline:
+	kfp dsl compile --py pipelines/dsl.py --output pipelines/$(PIPELINE_NAME).yaml
+
+build:
+	docker build -t $(IMAGE_NAME) .
+
+push:
+	docker push $(IMAGE_NAME)
+
+deploy:
+	kfp pipeline --endpoint $(ENDPOINT) create -p $(PIPELINE_NAME) pipelines/$(PIPELINE_NAME).yaml
