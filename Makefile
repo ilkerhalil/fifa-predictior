@@ -1,3 +1,6 @@
+export PIPELINE_NAME = fifa-predictior-pipeline
+export IMAGE_NAME = localhost:5000/$(PIPELINE_NAME):$(TAG)
+export KF_PIPELINES_ENDPOINT = http://192.168.0.150.nip.io/
 install:
 	pip install -r requirements.txt
 
@@ -16,12 +19,15 @@ check-format:
 lint:
 	flake8 src
 
-create_model:
+clean:
 	rm -rf models/*
+	rm -f *.yaml
+
+create-model: clean
 	python src/train.py
 
-kfp-compile-pipeline:
-	kfp dsl compile --py pipelines/dsl.py --output pipelines/$(PIPELINE_NAME).yaml
+kfp-compile: clean
+	python pipelines/dsl.py
 
 build:
 	docker build -t $(IMAGE_NAME) .
@@ -30,4 +36,4 @@ push:
 	docker push $(IMAGE_NAME)
 
 deploy:
-	kfp pipeline --endpoint $(ENDPOINT) create -p $(PIPELINE_NAME) pipelines/$(PIPELINE_NAME).yaml
+	kfp pipeline --endpoint $(KF_PIPELINES_ENDPOINT) create -p $(PIPELINE_NAME) $(PIPELINE_NAME).yaml

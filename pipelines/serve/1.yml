@@ -1,0 +1,12 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "fifa-predictior"
+  namespace: kubeflow-user-example-com
+  annotations:
+    "sidecar.istio.io/inject": "true"
+spec:
+  predictor:
+    tensorflow:
+      args: ["--enable_docs_url=True"]
+      storageUri: "pvc://dataset-pvc/fifa-predictior"
