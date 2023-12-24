@@ -150,14 +150,19 @@ make format
 ```sh
 make lint
 ```
-
 ### Create Model
 
 ```sh
 make create_model
 ```
 
-## Deploy Kubeflow
+### Port-Forward Kubernetes for local
+
+```sh
+kubectl port-forward svc/istio-ingressgateway -n istio-system --address 0.0.0.0 8080:80 &
+```
+
+### Deploy Kubeflow
 
 Tag for model. Pass make KF_PIPELINES_ENDPOINT and MODEL_OUTPUT_PATH environment
 
@@ -165,7 +170,7 @@ Tag for model. Pass make KF_PIPELINES_ENDPOINT and MODEL_OUTPUT_PATH environment
 make kfp-compile TAG=1.2.4 KF_PIPELINES_ENDPOINT="http://localhost:8080"  MODEL_OUTPUT_PATH="/data"
 ```
 
-## Call Model
+### Call Model
 
 ```sh
 make call-model
