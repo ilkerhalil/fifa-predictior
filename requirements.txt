@@ -5,3 +5,4 @@ keras==2.15.0
 tensorflow==2.15.0
 kfp==2.4.0
 kfp-kubernetes==1.0.0
+pandas-stubs==2.1.4.231218

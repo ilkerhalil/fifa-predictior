@@ -55,7 +55,7 @@ def model_creation_and_training(data_frame: pd.DataFrame):
     model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=1)
 
     loss = model.evaluate(X_test, y_test, verbose=1)
-    print("Test Loss: ", loss)
+    logging.info(f"Test Loss: {loss}")
     return model, X_test, y_test, X_train, y_train
 
 
@@ -72,7 +72,7 @@ def predict(
 
     # Print the first 10 predicted and actual values
     for i in range(10):
-        print(f"Predicted: {y_pred[i]}, Actual: {y_test.iloc[i]}")
+        logging.info(f"Predicted: {y_pred[i]}, Actual: {y_test.iloc[i]}")
 
     # Calculate the residuals for the test set
     residuals_test = np.abs(y_test - y_pred.reshape(-1))

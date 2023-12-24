@@ -37,3 +37,8 @@ push:
 
 deploy:
 	kfp pipeline --endpoint $(KF_PIPELINES_ENDPOINT) create -p $(PIPELINE_NAME) $(PIPELINE_NAME).yaml
+
+
+call-model:
+	TOKEN=$(kubectl create token default-editor -n kubeflow-user-example-com --audience=istio-ingressgateway.istio-system.svc.cluster.local --duration=24h)
+	curl -v -H "Host: fifa-predictior-predictor.kubeflow-user-example-com.example.com" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" http://localhost:8080/v1/models/fifa-predictior:predict -d @example-input/input.json
