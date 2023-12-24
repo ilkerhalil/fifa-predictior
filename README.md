@@ -169,6 +169,11 @@ Tag for model. Pass make KF_PIPELINES_ENDPOINT and MODEL_OUTPUT_PATH environment
 ```sh
 make kfp-compile TAG=1.2.4 KF_PIPELINES_ENDPOINT="http://localhost:8080"  MODEL_OUTPUT_PATH="/data"
 ```
+### Deploy fuction for KServe
+
+```sh
+make deploy-function
+```
 
 ### Call Model
 
