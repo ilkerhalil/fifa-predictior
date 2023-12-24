@@ -38,6 +38,9 @@ push:
 deploy:
 	kfp pipeline --endpoint $(KF_PIPELINES_ENDPOINT) create -p $(PIPELINE_NAME) $(PIPELINE_NAME).yaml
 
+deploy-function
+	kubectl apply -f pipelines/serve/authorization-policy-istio.yml
+	kubectl	apply -f pipelines/serve/fifa-predictior-inferenceservice.yml
 
 call-model:
 	TOKEN=$(kubectl create token default-editor -n kubeflow-user-example-com --audience=istio-ingressgateway.istio-system.svc.cluster.local --duration=24h)
