@@ -38,7 +38,7 @@ push:
 deploy:
 	kfp pipeline --endpoint $(KF_PIPELINES_ENDPOINT) create -p $(PIPELINE_NAME) $(PIPELINE_NAME).yaml
 
-deploy-function
+deploy-function:
 	kubectl apply -f pipelines/serve/authorization-policy-istio.yml
 	kubectl	apply -f pipelines/serve/fifa-predictior-inferenceservice.yml
 
