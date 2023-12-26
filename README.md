@@ -153,7 +153,7 @@ make lint
 ### Create Model
 
 ```sh
-make create_model
+make create-model
 ```
 
 ### Port-Forward Kubernetes for local
