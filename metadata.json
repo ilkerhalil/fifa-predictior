@@ -1,0 +1,68 @@
+{
+    "model_spec": {
+        "name": "fifa-predictior",
+        "signature_name": "",
+        "version": "1"
+    },
+    "metadata": {
+        "signature_def": {
+            "signature_def": {
+                "serving_default": {
+                    "inputs": {
+                        "dense_input": {
+                            "dtype": "DT_FLOAT",
+                            "tensor_shape": {
+                                "dim": [
+                                    {
+                                        "size": "-1",
+                                        "name": ""
+                                    },
+                                    {
+                                        "size": "38",
+                                        "name": ""
+                                    }
+                                ],
+                                "unknown_rank": false
+                            },
+                            "name": "serving_default_dense_input:0"
+                        }
+                    },
+                    "outputs": {
+                        "dense_2": {
+                            "dtype": "DT_FLOAT",
+                            "tensor_shape": {
+                                "dim": [
+                                    {
+                                        "size": "-1",
+                                        "name": ""
+                                    },
+                                    {
+                                        "size": "1",
+                                        "name": ""
+                                    }
+                                ],
+                                "unknown_rank": false
+                            },
+                            "name": "StatefulPartitionedCall:0"
+                        }
+                    },
+                    "method_name": "tensorflow/serving/predict"
+                },
+                "__saved_model_init_op": {
+                    "inputs": {},
+                    "outputs": {
+                        "__saved_model_init_op": {
+                            "dtype": "DT_INVALID",
+                            "tensor_shape": {
+                                "dim": [],
+                                "unknown_rank": true
+                            },
+                            "name": "NoOp"
+                        }
+                    },
+                    "method_name": ""
+                }
+            }
+        }
+    }
+}

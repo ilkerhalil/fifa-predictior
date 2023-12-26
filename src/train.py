@@ -36,7 +36,9 @@ def preparation(dataset_path: str) -> pd.DataFrame:
     return data_frame
 
 
-def model_creation_and_training(data_frame: pd.DataFrame):
+def model_creation_and_training(
+    data_frame: pd.DataFrame,
+) -> tuple[Sequential, pd.DataFrame, pd.DataFrame, pd.Series, pd.DataFrame, pd.Series]:
     target = "overall_rating"
     # Split the data into features (X) and target (y)
     X = data_frame.drop([target, "name"], axis=1)
@@ -61,12 +63,12 @@ def model_creation_and_training(data_frame: pd.DataFrame):
 
 def predict(
     model_output_path: str,
-    data_frame,
+    data_frame: pd.DataFrame,
     model: Sequential,
-    X_test,
-    y_test,
-    X_train,
-    y_train,
+    X_test: pd.DataFrame,
+    y_test: pd.Series,
+    X_train: pd.DataFrame,
+    y_train: pd.Series,
 ):
     y_pred = model.predict(X_test)
 
