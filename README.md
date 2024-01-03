@@ -1,6 +1,18 @@
 # FIFA PREDICTIOR
 
 
+## FIFA Player Overall Rating Prediction Model
+
+### Dataset
+The model utilizes a CSV file as the training dataset containing various attributes of FIFA players. The dataset includes features such as age, height_cm, marking, body_type, skill_moves (1-5), and other football player characteristics. "overall_rating" has been designated as the target variable.
+
+### Model Architecture
+This model is a regression model used to predict the "Overall Rating," and it is built using an artificial neural network. The layers of the model are structured as follows:
+
+Input Layer: 512 neurons, ReLU activation function
+Hidden Layer: 128 neurons, ReLU activation function
+Output Layer: 1 neuron, Linear activation function
+The model is compiled using the "adam" optimization algorithm and the "mean_squared_error" loss function.
 
 ## Install Requirements
 
