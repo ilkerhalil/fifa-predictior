@@ -3,10 +3,13 @@ import os
 from kfp import dsl, kubernetes
 from kfp.compiler import Compiler
 from kfpclientmanager import KFPClientManager
+from kfp.dsl import Output,Artifact,Input
+
+
 
 
 @dsl.container_component
-def Train() -> dsl.ContainerSpec:
+def Train(input:Input[Artifact],output: Output[Artifact]) -> dsl.ContainerSpec:
     image_name = os.getenv("IMAGE_NAME")
     model_output_path = os.getenv("MODEL_OUTPUT_PATH")
     version = os.getenv("MODEL_VERSION", "v1.0.0")
@@ -15,7 +18,8 @@ def Train() -> dsl.ContainerSpec:
         command=["python", "train.py"],
         args=[
                 f"--model-base-path={model_output_path}",
-                f"--model-version={version}"
+                f"--model-version={version}",
+                f"--model-base-path={output.path}"
             ]
     )
 

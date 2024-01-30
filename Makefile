@@ -38,13 +38,10 @@ push:
 forward-kubernetes:
 	kubectl port-forward svc/istio-ingressgateway -n istio-system --address 0.0.0.0 8080:80 &
 
-deploy:
-	kfp pipeline --endpoint $(KF_PIPELINES_ENDPOINT) create -p $(PIPELINE_NAME) $(PIPELINE_NAME).yaml
-
 deploy-function:
 	kubectl apply -f pipelines/serve/authorization-policy-istio.yml
 	kubectl	apply -f pipelines/serve/fifa-predictior-inferenceservice.yml
 
 call-model:
 	TOKEN=$(kubectl create token default-editor -n kubeflow-user-example-com --audience=istio-ingressgateway.istio-system.svc.cluster.local --duration=24h)
-	curl -v -H "Host: fifa-predictior-predictor.kubeflow-user-example-com.example.com" -H "Authorization: Bearer $(TOKEN)" -H "Content-Type: application/json" http://localhost:8080/v1/models/fifa-predictior:predict -d @example-input/input.json
+	curl -v -H "Host: fifa-predictior-predictor.kubeflow-user-example-com.example.com" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" http://localhost:8080/v1/models/fifa-predictior:predict -d @example-input/input.json
